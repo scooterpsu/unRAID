@@ -1,0 +1,209 @@
+<?xml version='1.0' standalone='yes'?>
+
+<!DOCTYPE PLUGIN [
+	<!ENTITY name				"scriptRunner">
+	<!ENTITY displayName		"scriptRunner">
+	<!ENTITY author				"scooterpsu">
+	<!ENTITY authorName			"Scott Lewis">
+	<!ENTITY plgVersion			"2016.02.03">
+	<!ENTITY pld				"/boot/config/plugins">
+	<!ENTITY plg				"&pld;/&name;">
+	<!ENTITY pls				"/usr/local/emhttp/plugins/&name;/scripts">
+	<!ENTITY pid 				"/var/run/&name;/&name;.pid">
+	<!ENTITY ghm				"https://github.com/&author;/unRAID/raw/master">
+	<!ENTITY pluginURL			"&ghm;/Plugins/&name;.plg">
+	<!ENTITY controlFILE		"&name;-&author;-Control.tar.gz">
+	<!ENTITY controlMD5			"95282351577393e42c86105646959b3d">
+	<!ENTITY controlURL			"&ghm;/AppSupport/&name;/&controlFILE;">
+	<!ENTITY commonDIR			"/usr/local/&author;-Common">
+]>
+
+<PLUGIN
+	name="&name;"
+	author="&author;"
+	version="&plgVersion;"
+	pluginURL="&pluginURL;"
+>
+
+<!--
+=========================================================================
+License
+=========================================================================
+
+GNU General Public License v3 (GPL v3)
+
+=========================================================================
+Description
+=========================================================================
+
+This Plugin installs scriptRunner for UnRaid.
+All dependencies are installed as needed and everything is controllable
+from the webgui.
+
+=========================================================================
+List of files created by this plugin
+=========================================================================
+
+INSTALLED TO: /boot/config/plugins/scriptRunner
+
+scriptRunner-scooterpsu-Control.tar.gz		-> This holds the plugin files
+README								-> This contains the instructions on how to use the plugin
+mountscript.sh						-> This is used to mount directories on array start
+unmountscript.sh					-> This is used to unmoung directories on array stop
+
+INSTALLED TO: /usr/local/emhttp/plugins/scriptRunner
+
+event/disks_mounted					-> Starts the application when the array is mounted
+event/unmounting_disks				-> Stops the application when the array is unmounted
+
+-->
+
+<FILE Name="&plg;/README">
+<INLINE>
+=========================================================================
+README
+=========================================================================
+Butts
+
+scooterpsu
+-->
+</INLINE>
+</FILE>
+
+<CHANGES>
+###2016-02-02
+ - version 0.1	: First release
+</CHANGES>
+
+<FILE Name="&plg;/mountscript.sh">
+<INLINE>
+#!/bin/bash
+# put your commands for creating mount points and mounting here
+# they will be executed when the array starts
+# e.g.:
+# mkdir /mnt/cache/FTP/movies;mount --bind /mnt/user0/movies /mnt/cache/FTP/movies
+</INLINE>
+</FILE>
+
+<FILE Name="&plg;/unmountscript.sh">
+<INLINE>
+#!/bin/bash
+# put your commands for unmounting and removing mount points here
+# they will be executed when the array stops
+# e.g.:
+# umount /mnt/cache/FTP/movies;rmdir /mnt/cache/FTP/movies
+</INLINE>
+</FILE>
+
+<FILE Name="/tmp/&name;-script" Run="/bin/bash">
+<INLINE>
+# =========================================================================
+# Download required plugin files
+# =========================================================================
+# Setup plugin variables
+CTRLFILES="/boot/config/plugins/&name;/&controlFILE;"
+
+echo "Downloading any missing plugin files..."
+
+# Check for net connectivity to the repo, 5 second timeout then fails
+NETCHECK=`timeout 5 wget --no-check-certificate -qST4 --spider "https://github.com/&author;" 2>&amp;1 | grep HTTP | tail -1 | cut -f1 | awk '{print $NF}'`
+if [ "$NETCHECK" == "OK" ]; then
+	HASNET="yes"
+else
+	HASNET="no"
+fi
+
+# Downloads plugin control files if they don't exist, then verify them
+if [ ! -f "$CTRLFILES" ]; then
+	echo -e "\t Latest plugin control files downloading"
+	if [ "$HASNET" == "yes" ]; then
+		mkdir -p "/boot/config/plugins/&name;"
+		wget --no-check-certificate -qO "$CTRLFILES" "&controlURL;"
+		if [ -f "$CTRLFILES" ]; then
+			MD5TEST1=`echo "&controlMD5;  $CTRLFILES" | md5sum --quiet --status -c - &amp;&amp; echo "1" || echo "0"`
+			if [ "$MD5TEST1" == "1" ]; then
+				echo -e "\t Plugin control files have passed MD5 check"
+			else
+				echo "...Downloaded plugin control files have failed MD5 check. Deleting and aborting install"
+				rm -f "$CTRLFILES"
+				rm -f "/tmp/&name;-script"
+				exit 1
+			fi
+		else
+			echo "...Unable to download missing plugin control files. Aborting install (download fail)"
+			rm -f "/tmp/&name;-script"
+			exit 1
+		fi
+	else
+		echo "...Unable to download missing plugin control files. Aborting install (no net)"
+		rm -f "/tmp/&name;-script"
+		exit 1
+	fi
+fi
+
+echo "...Downloading complete!"
+
+# ==============================================
+# The 'install' script
+# ==============================================
+
+echo "Running install script for &displayName;..."
+
+# Extract and install the plugin support files from the tar.gz file
+echo -e "\t Installing plugin control files"
+if [ -f "$CTRLFILES" ]; then
+	mkdir -p "/tmp/&name;-inst/install-A"
+	TEMP1="/tmp/&name;-inst/install-A/usr/local/emhttp/plugins/&name;"
+	tar -xf "$CTRLFILES" -C "/tmp/&name;-inst/install-A"
+	cp -Raf "/tmp/&name;-inst/install-A/." /
+else
+	echo "...Install failed, no plugin control files located. Exiting"
+	rm -f "/tmp/&name;-script"
+	exit 1
+fi
+
+# Correct any ^M (Windows carriage characters) in the important files
+[ -d "/usr/local/emhttp/plugins/&name;/event" ] &amp;&amp; sed -i 's!\r!!g' /usr/local/emhttp/plugins/&name;/event/*
+
+# Create /usr/local/var if it doesn't exist
+[ ! -d "/usr/local/var" ] &amp;&amp; mkdir /usr/local/var
+
+# Remove the temp install folder
+echo -e "\t Cleaning up temp files/folders"
+rm -Rf "/tmp/&name;-inst"
+
+echo "...Install complete!"
+
+rm -f "/tmp/&name;-script"
+</INLINE>
+</FILE>
+
+<FILE Name="/tmp/&name;-script" Run="/bin/bash" Method="remove">
+<INLINE>
+
+# ==============================================
+# The 'remove' script
+# ==============================================
+
+echo "Uninstalling $displayName; plugin..."
+sleep 1
+
+# Remove all files and directories pertaining to this plugin
+if [ "$(find &commonDIR; -type f | grep startcfg.sh | wc -l 2> /dev/null)" == "0" ]; then
+	rm -Rf "&commonDIR;"
+fi
+
+[ -d "/usr/local/emhttp/plugins/&name;" ] &amp;&amp; rm -fR "/usr/local/emhttp/plugins/&name;"
+[ -f "/etc/rc.d/rc.&name;" ] &amp;&amp; rm -f "/etc/rc.d/rc.&name;"
+[ -e "/var/log/plugins/&name;.plg" ] &amp;&amp; rm -f "/var/log/plugins/&name;.plg"
+[ -d "/boot/config/plugins/&name;" ] &amp;&amp; rm -fR "/boot/config/plugins/&name;"
+[ -f "/boot/config/plugins/&name;.plg.old" ] &amp;&amp; rm -f "/boot/config/plugins/&name;.plg.old"
+
+echo "...Uninstall complete!"
+sleep 1
+
+rm -f "/tmp/&name;-script"
+</INLINE>
+</FILE>
+
+</PLUGIN>
