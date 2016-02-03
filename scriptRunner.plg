@@ -153,7 +153,6 @@ echo "Running install script for &displayName;..."
 echo -e "\t Installing plugin control files"
 if [ -f "$CTRLFILES" ]; then
 	mkdir -p "/tmp/&name;-inst/install-A"
-	TEMP1="/tmp/&name;-inst/install-A/usr/local/emhttp/plugins/&name;"
 	tar -xf "$CTRLFILES" -C "/tmp/&name;-inst/install-A"
 	cp -Raf "/tmp/&name;-inst/install-A/." /
 else
@@ -194,7 +193,6 @@ if [ "$(find &commonDIR; -type f | grep startcfg.sh | wc -l 2> /dev/null)" == "0
 fi
 
 [ -d "/usr/local/emhttp/plugins/&name;" ] &amp;&amp; rm -fR "/usr/local/emhttp/plugins/&name;"
-[ -f "/etc/rc.d/rc.&name;" ] &amp;&amp; rm -f "/etc/rc.d/rc.&name;"
 [ -e "/var/log/plugins/&name;.plg" ] &amp;&amp; rm -f "/var/log/plugins/&name;.plg"
 [ -d "/boot/config/plugins/&name;" ] &amp;&amp; rm -fR "/boot/config/plugins/&name;"
 [ -f "/boot/config/plugins/&name;.plg.old" ] &amp;&amp; rm -f "/boot/config/plugins/&name;.plg.old"
