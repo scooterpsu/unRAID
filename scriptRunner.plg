@@ -13,7 +13,7 @@
 	<!ENTITY ghm				"https://github.com/&author;/unRAID/raw/master">
 	<!ENTITY pluginURL			"&ghm;/Plugins/&name;.plg">
 	<!ENTITY controlFILE		"&name;-&author;-Control.tar.gz">
-	<!ENTITY controlMD5			"95282351577393e42c86105646959b3d">
+	<!ENTITY controlMD5			"991fd3b0d9b2e40bfe7134d1a84c25b2">
 	<!ENTITY controlURL			"&ghm;/AppSupport/&name;/&controlFILE;">
 	<!ENTITY commonDIR			"/usr/local/&author;-Common">
 ]>
@@ -73,6 +73,8 @@ scooterpsu
 <CHANGES>
 ###2016-02-02
  - version 0.1	: First release
+ ###2016-02-02
+ - version 0.2	: Bug fixes
 </CHANGES>
 
 <FILE Name="&plg;/mountscript.sh">
