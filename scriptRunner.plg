@@ -1,15 +1,13 @@
 <?xml version='1.0' standalone='yes'?>
 <!DOCTYPE PLUGIN [
 <!ENTITY name "scriptRunner">
-<!ENTITY displayName "scriptRunner">
 <!ENTITY author "scooterpsu">
-<!ENTITY authorName "Scott Lewis">
-<!ENTITY plgVersion "2019.02.16">
+<!ENTITY plgVersion "2019.02.16b">
 <!ENTITY pld "/boot/config/plugins">
 <!ENTITY plg "&pld;/&name;">
 <!ENTITY pls "/usr/local/emhttp/plugins/&name;/scripts">
 <!ENTITY pid "/var/run/&name;/&name;.pid">
-<!ENTITY ghm "https://github.com/&author;/unRAID/raw/master">
+<!ENTITY ghm "https://raw.githubusercontent.com/&author;/unRAID/master/">
 <!ENTITY pluginURL "&ghm;/Plugins/&name;.plg">
 <!ENTITY controlFILE "&name;-&author;-Control.tar.gz">
 <!ENTITY controlMD5 "ccc0a5f930fe3336bbfd8b1c6307c003">
@@ -20,6 +18,8 @@
 <PLUGIN name="&name;" author="&author;" version="&plgVersion;" pluginURL="&pluginURL;" support="https://github.com/scooterpsu/unRAID">
 <CHANGES>
 ##&name;
+###2019-02-16b
+- URL fix
 ###2019-02-16
 - Fix up-to-date status and code cleanup
 ###2016-02-02b
@@ -100,7 +100,7 @@ echo "...Downloading complete!"
 # The 'install' script
 # ==============================================
 
-echo "Running install script for &displayName;..."
+echo "Running install script for &name;..."
 
 # Extract and install the plugin support files from the tar.gz file
 echo -e "\t Installing plugin control files"
@@ -137,7 +137,7 @@ rm -f "/tmp/&name;-script"
 # The 'remove' script
 # ==============================================
 
-echo "Uninstalling $displayName; plugin..."
+echo "Uninstalling $name; plugin..."
 sleep 1
 
 # Remove all files and directories pertaining to this plugin
