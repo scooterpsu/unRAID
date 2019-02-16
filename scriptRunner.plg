@@ -1,80 +1,29 @@
 <?xml version='1.0' standalone='yes'?>
-
 <!DOCTYPE PLUGIN [
-	<!ENTITY name				"scriptRunner">
-	<!ENTITY displayName		"scriptRunner">
-	<!ENTITY author				"scooterpsu">
-	<!ENTITY authorName			"Scott Lewis">
-	<!ENTITY plgVersion			"2016.02.03">
-	<!ENTITY pld				"/boot/config/plugins">
-	<!ENTITY plg				"&pld;/&name;">
-	<!ENTITY pls				"/usr/local/emhttp/plugins/&name;/scripts">
-	<!ENTITY pid 				"/var/run/&name;/&name;.pid">
-	<!ENTITY ghm				"https://github.com/&author;/unRAID/raw/master">
-	<!ENTITY pluginURL			"&ghm;/Plugins/&name;.plg">
-	<!ENTITY controlFILE		"&name;-&author;-Control.tar.gz">
-	<!ENTITY controlMD5			"ccc0a5f930fe3336bbfd8b1c6307c003">
-	<!ENTITY controlURL			"&ghm;/AppSupport/&name;/&controlFILE;">
-	<!ENTITY commonDIR			"/usr/local/&author;-Common">
+<!ENTITY name "scriptRunner">
+<!ENTITY author "scooterpsu">
+<!ENTITY plgVersion "2019.02.16">
+<!ENTITY pld "/boot/config/plugins">
+<!ENTITY plg "&pld;/&name;">
+<!ENTITY pls "/usr/local/emhttp/plugins/&name;/scripts">
+<!ENTITY pid "/var/run/&name;/&name;.pid">
+<!ENTITY ghm "https://github.com/&author;/unRAID/raw/master">
+<!ENTITY pluginURL "&ghm;/Plugins/&name;.plg">
+<!ENTITY controlFILE "&name;-&author;-Control.tar.gz">
+<!ENTITY controlMD5 "ccc0a5f930fe3336bbfd8b1c6307c003">
+<!ENTITY controlURL "&ghm;/AppSupport/&name;/&controlFILE;">
+<!ENTITY commonDIR "/usr/local/&author;-Common">
 ]>
 
-<PLUGIN
-	name="&name;"
-	author="&author;"
-	version="&plgVersion;"
-	pluginURL="&pluginURL;"
->
-
-<!--
-=========================================================================
-License
-=========================================================================
-
-GNU General Public License v3 (GPL v3)
-
-=========================================================================
-Description
-=========================================================================
-
-This Plugin installs scriptRunner for UnRaid.
-All dependencies are installed as needed and everything is controllable
-from the webgui.
-
-=========================================================================
-List of files created by this plugin
-=========================================================================
-
-INSTALLED TO: /boot/config/plugins/scriptRunner
-
-scriptRunner-scooterpsu-Control.tar.gz		-> This holds the plugin files
-README								-> This contains the instructions on how to use the plugin
-mountscript.sh						-> This is used to mount directories on array start
-unmountscript.sh					-> This is used to unmoung directories on array stop
-
-INSTALLED TO: /usr/local/emhttp/plugins/scriptRunner
-
-event/disks_mounted					-> Starts the application when the array is mounted
-event/unmounting_disks				-> Stops the application when the array is unmounted
-
--->
-
-<FILE Name="&plg;/README">
-<INLINE>
-=========================================================================
-README
-=========================================================================
-Butts
-
-scooterpsu
--->
-</INLINE>
-</FILE>
-
+<PLUGIN name="&name;" author="&author;" version="&plgVersion;" pluginURL="&pluginURL;" support="https://github.com/scooterpsu/unRAID">
 <CHANGES>
-###2016-02-02
- - version 0.1	: First release
+##&name;
+###2019-02-16
+- Fix up-to-date status and code cleanup
 ###2016-02-02b
- - version 0.2	: Bug fixes
+- version 0.2	: Bug fixes
+###2016-02-02
+- version 0.1	: First release
 </CHANGES>
 
 <FILE Name="&plg;/mountscript.sh">
