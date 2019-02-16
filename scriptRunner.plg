@@ -1,7 +1,9 @@
 <?xml version='1.0' standalone='yes'?>
 <!DOCTYPE PLUGIN [
 <!ENTITY name "scriptRunner">
+<!ENTITY displayName "scriptRunner">
 <!ENTITY author "scooterpsu">
+<!ENTITY authorName "Scott Lewis">
 <!ENTITY plgVersion "2019.02.16">
 <!ENTITY pld "/boot/config/plugins">
 <!ENTITY plg "&pld;/&name;">
