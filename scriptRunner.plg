@@ -2,7 +2,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name "scriptRunner">
 <!ENTITY author "scooterpsu">
-<!ENTITY plgVersion "2019.02.16b">
+<!ENTITY plgVersion "2019.02.16c">
 <!ENTITY pld "/boot/config/plugins">
 <!ENTITY plg "&pld;/&name;">
 <!ENTITY pls "/usr/local/emhttp/plugins/&name;/scripts">
@@ -18,7 +18,7 @@
 <PLUGIN name="&name;" author="&author;" version="&plgVersion;" pluginURL="&pluginURL;" support="https://github.com/scooterpsu/unRAID">
 <CHANGES>
 ##&name;
-###2019-02-16b
+###2019-02-16c
 - URL fix
 ###2019-02-16
 - Fix up-to-date status and code cleanup
